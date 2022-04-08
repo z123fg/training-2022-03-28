@@ -1,6 +1,4 @@
 let taskInput;
-let incompleteTasks;
-let completedTasks;
 let clearButton;
 let formHandler;
 
@@ -8,16 +6,15 @@ const baseUrl = "http://localhost:3000/";
 const path = "todos";
 
 // Make sure window is loaded before registering events for elements
-window.onload = async (event) => {
+window.onload = async (e) => {
+  e.preventDefault();
   console.log("page fully loaded");
   taskInput = document.getElementById("new-task");
-  incompleteTasks = document.getElementById("incomplete-tasks");
-  completedTasks = document.getElementById("completed-tasks");
   clearButton = document.getElementById("clear");
   formHandler = document.querySelector(".input-class");
   await getTodos();
   registerFormHandler();
-  registerListItemEventHandlers();
+  registerClearButtonHandler();
 };
 
 // Gets all todos from server
@@ -69,6 +66,23 @@ const deleteTodo = async (todoId) => {
     });
 };
 
+const clearTodos = async () => {
+  [...document.getElementsByClassName("user-list-item-test")].forEach(
+    (element) => {
+      deleteTodo(element.id);
+    }
+  );
+};
+
+const registerClearButtonHandler = () => {
+  const clearButton = document.getElementById("clear");
+
+  clearButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    clearTodos();
+  });
+};
+
 const registerFormHandler = () => {
   const formHandler = document.querySelector(".input-class");
 
@@ -81,17 +95,10 @@ const registerFormHandler = () => {
   });
 };
 
-const registerListItemEventHandlers = () => {
-  [...document.getElementsByClassName("user-list-item-test")].forEach(
-    (element) => {
-      element
-        .getElementsByClassName("delete")[0]
-        .addEventListener("click", (e) => {
-          e.preventDefault();
-          deleteTodo(element.id);
-        });
-    }
-  );
+const handleDeleteButton = (todoId) => deleteTodo(todoId);
+
+const handleCheckedTodo = (todoId) => {
+  console.log(todoId);
 };
 
 function renderTodos(data) {
@@ -105,9 +112,9 @@ function renderTodos(data) {
               <label> ${user.content}</label>
           </div>
           <form class="btn-groups">
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-              <input type="checkBox" checked="">
+              <button type="button" class="edit">Edit</button>
+              <button type="button" class="delete" onclick="handleDeleteButton(${user.id})">Delete</button>
+              <input type="checkBox" onchange="handleCheckedTodo(${user.id})">
           </form>
         </li>
       `;
