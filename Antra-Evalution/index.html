@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> To Do LIST </title>
+    <link href="https://fonts.googleapis.com/css2?family=Grape+Nuts&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./index.css" />
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="section1">
+            <h1 id="title">TO DO LIST</h1>
+
+            <form class="input-class">
+                <label for="new-task">Add Tasks</label>
+                <input id="new-task" type="text" />
+                <button id="addButton">Add</button>
+            </form>
+        </div>
+
+        <div class="to-do-section">
+            <div class="section2">
+                <h3> Pending Tasks </h3>
+                <ul id="incomplete-tasks"></ul>
+            </div>
+
+            <div class="section3">
+                <h3>Completed Tasks</h3>
+                <ul id="completed-tasks">
+                    <li class="user-list-item" id=1234>
+                        <div class="content-group">
+                            <label>Learn JavaScript</label>
+                        </div>
+                        <form class="btn-groups">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                            <input type="checkbox" checked="" />
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section4">
+            <button id="clear">
+                <p>Clear</p>
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>
