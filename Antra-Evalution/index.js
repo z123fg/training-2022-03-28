@@ -2,6 +2,8 @@ let taskInput;
 let clearButton;
 let formHandler;
 
+let editButton;
+
 const baseUrl = "http://localhost:3000/";
 const path = "todos";
 
@@ -12,6 +14,9 @@ window.onload = async (e) => {
   taskInput = document.getElementById("new-task");
   clearButton = document.getElementById("clear");
   formHandler = document.querySelector(".input-class");
+
+  // editButton = document.querySelector(".edit");
+
   await getTodos();
   registerFormHandler();
   registerClearButtonHandler();
@@ -51,38 +56,56 @@ const postTodo = async (todo = "") => {
     });
 };
 
-const deleteTodo = async (todoId) => {
-  if (!todoId) return;
+// Update the exisitng todo
+let updateTodo = (todoId, userContent, condition) => {
+  if (!userContent || userContent.length < 1) return;
 
-  await fetch(`${baseUrl}${path}/${todoId}`, {
-    method: "DELETE",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      const dataArr = [];
-      dataArr.push(data);
-      console.log(dataArr);
-      renderTodos(dataArr);
-    });
-};
-
-const clearTodos = async () => {
-  [...document.getElementsByClassName("user-list-item-test")].forEach(
-    (element) => {
-      deleteTodo(element.id);
-    }
-  );
-};
-
-const registerClearButtonHandler = () => {
-  const clearButton = document.getElementById("clear");
-
-  clearButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    clearTodos();
+  fetch(`${baseUrl}${path}/${todoId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      content: userContent,
+      completed: condition,
+    }),
   });
 };
 
+let updateCondition = (todoId, condition) => {
+  fetch(`${baseUrl}${path}/${todoId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      completed: condition,
+    }),
+  });
+};
+
+// delete items in the list
+const deleteTodo = async (todoId) => {
+  if (!todoId) return;
+
+  console.log("todoId", todoId);
+
+  await fetch(`${baseUrl}${path}/${todoId}`, {
+    method: "DELETE",
+  });
+};
+
+// to delete all the items in the list
+const clearTodos = async () => {
+  [...document.getElementsByClassName("pending-user-list-item")]
+    .reverse()
+    .forEach((element) => {
+      console.log("from clear function: ", element);
+      handleDeleteButton(element.id);
+    });
+};
+
+// for pass values to POST method
 const registerFormHandler = () => {
   const formHandler = document.querySelector(".input-class");
 
@@ -95,26 +118,50 @@ const registerFormHandler = () => {
   });
 };
 
-const handleDeleteButton = (todoId) => deleteTodo(todoId);
-
-const handleCheckedTodo = (todoId) => {
-  console.log(todoId);
+const handleDeleteButton = (todoId) => {
+  deleteTodo(todoId);
+  document.getElementById(todoId).remove();
 };
 
-function renderTodos(data) {
+const registerClearButtonHandler = () => {
+  const clearButton = document.getElementById("clear");
+
+  clearButton.addEventListener("click", (e) => {
+    clearTodos();
+  });
+};
+
+// const handleCheckedTodo = (todoId) => {
+//   const liId = document.getElementById(todoId);
+//   const checkbox = liId.lastElementChild.lastElementChild;
+
+//   const completedTasks = document.getElementById("completed-tasks");
+//   const pendingTasks = document.getElementById("incomplete-tasks");
+
+//   if (checkbox.checked) {
+//     completedTasks.appendChild(liId);
+//     //updateCondition(todoId, false);
+//   } else {
+//     pendingTasks.appendChild(liId);
+//     //updateCondition(todoId, true);
+//   }
+// };
+
+function renderTodos(data, condition = false) {
   const html = data
     .slice(0)
     .reverse()
     .map((user) => {
       return `
-        <li class="user-list-item-test" id=${user.id}>
+        <li class="pending-user-list-item" id=${user.id}>
           <div class="content-group">
-              <label> ${user.content}</label>
+              <label class="user-content"> ${user.content}</label>
+              <input class='inputEdit' type='text'>
           </div>
           <form class="btn-groups">
-              <button type="button" class="edit">Edit</button>
+              <button type="button" class="edit" onclick="handleEditButton(${user.id})">Edit</button>
               <button type="button" class="delete" onclick="handleDeleteButton(${user.id})">Delete</button>
-              <input type="checkBox" onchange="handleCheckedTodo(${user.id})">
+              <input type="checkBox" class="checkbox" onchange="handleCheckedTodo(${user.id})">
           </form>
         </li>
       `;
@@ -124,4 +171,22 @@ function renderTodos(data) {
   document
     .querySelector("#incomplete-tasks")
     .insertAdjacentHTML("afterbegin", html);
+
+  // document
+  //   .querySelector("#completed-tasks")
+  //   .insertAdjacentHTML("afterbegin", html);
 }
+
+const handleEditButton = (todoId) => {
+  let ListWithId = document.getElementById(todoId);
+
+  let userContent = ListWithId.querySelector(".user-content");
+
+  let editableInput = ListWithId.querySelector(".content-group > input");
+
+  editableInput.classList.toggle("inputEdit");
+  userContent.classList.toggle("user-content-hidden");
+  userContent.textContent = editableInput.value;
+
+  updateTodo(todoId, userContent.textContent, false);
+};

@@ -13,44 +13,40 @@
 
 <body>
     <div class="container">
-        <div class="section1">
-            <h1 id="title">TO DO LIST</h1>
+
+        <header>
+
+            <h1 id="title"> TO DO LIST</h1>
 
             <form class="input-class">
                 <label for="new-task">Add Tasks</label>
                 <input id="new-task" type="text" />
                 <button id="addButton">Add</button>
             </form>
-        </div>
+
+        </header>
 
         <div class="to-do-section">
-            <div class="section2">
+
+            <div class="pending-tasks-group">
                 <h3> Pending Tasks </h3>
                 <ul id="incomplete-tasks"></ul>
             </div>
 
-            <div class="section3">
+            <div class="completed-tasks-group">
                 <h3>Completed Tasks</h3>
                 <ul id="completed-tasks">
-                    <li class="user-list-item" id=1234>
-                        <div class="content-group">
-                            <label>Learn JavaScript</label>
-                        </div>
-                        <form class="btn-groups">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                            <input type="checkbox" />
-                        </form>
-                    </li>
                 </ul>
             </div>
+
         </div>
 
-        <div class="section4">
+        <div class="clear-btn">
             <button id="clear">
                 <p>Clear</p>
             </button>
         </div>
+
     </div>
 </body>
 
