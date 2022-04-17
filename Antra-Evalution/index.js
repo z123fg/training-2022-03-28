@@ -90,6 +90,7 @@ const registerFormHandler = () => {
   });
 };
 
+// POST edited data using POST Method
 const handleEditButton = (todoId) => {
   let ListWithId = document.getElementById(todoId);
 
@@ -101,7 +102,15 @@ const handleEditButton = (todoId) => {
   userContent.classList.toggle("user-content-hidden");
   userContent.textContent = editableInput.value.trim();
 
-  updateTodo(todoId, userContent.textContent, false);
+  let checkBox = ListWithId.lastElementChild.lastElementChild;
+
+  if (checkBox.checked) {
+    updateTodo(todoId, userContent.textContent, true);
+  } else {
+    updateTodo(todoId, userContent.textContent, false);
+  }
+
+  // updateTodo(todoId, userContent.textContent, false);
 };
 
 const handleDeleteButton = (todoId) => {
@@ -130,13 +139,13 @@ const handleCheckedTodo = (todoId) => {
 };
 
 // to delete all the items in the list
-const clearTodos = async () => {
-  [...document.getElementsByClassName("pending-user-list-item")]
-    .reverse()
-    .forEach((element) => {
+const clearTodos = () => {
+  [...document.getElementsByClassName("pending-user-list-item")].forEach(
+    (element) => {
       console.log("from clear function: ", element);
       handleDeleteButton(element.id);
-    });
+    }
+  );
 };
 
 const registerClearButtonHandler = () => {
@@ -170,8 +179,7 @@ function renderTodos(data) {
               user.id
             })">
         </form>
-      </li>
-    `;
+      </li>`;
     } else {
       incompltedHTML += `   <li class="pending-user-list-item" id=${user.id}>
       <div class="content-group">
@@ -201,58 +209,3 @@ function renderTodos(data) {
     .querySelector("#completed-tasks")
     .insertAdjacentHTML("afterbegin", completedHTML);
 }
-
-// function renderTodos(data) {
-//   let completedHTML = "";
-//   let incompltedHTML = "";
-
-//   const html = data
-//     .slice(0)
-//     .reverse()
-//     .map((user) => {
-//       return `
-//         <li class="pending-user-list-item" id=${user.id}>
-//           <div class="content-group">
-//               <label class="user-content"> ${user.content.trim()}</label>
-//               <input class='inputEdit' type='text'>
-//           </div>
-//           <form class="btn-groups">
-//               <button type="button" class="edit" onclick="handleEditButton(${
-//                 user.id
-//               })">Edit</button>
-//               <button type="button" class="delete" onclick="handleDeleteButton(${
-//                 user.id
-//               })">Delete</button>
-//               <input type="checkBox" class="checkbox" onchange="handleCheckedTodo(${
-//                 user.id
-//               })">
-//           </form>
-//         </li>
-//       `;
-//     })
-//     .join("");
-
-//   //console.log(html);
-
-//   // console.log("before forEach", data);
-//   data.forEach((user) => {
-//     console.log("user from forEach", user);
-//     if (user.isCompleted) {
-//       // document
-//       //   .querySelector("#completed-tasks")
-//       //   .insertAdjacentHTML("afterbegin", html);
-
-//       document.querySelector("#completed-tasks").innerHTML += html;
-//     } else {
-//       // document
-//       //   .querySelector("#incomplete-tasks")
-//       //   .insertAdjacentHTML("afterbegin", html);
-
-//       document.querySelector("#incomplete-tasks").innerHTML += html;
-//     }
-//   });
-
-//   // document
-//   //   .querySelector("#incomplete-tasks")
-//   //   .insertAdjacentHTML("afterbegin", html);
-// }
