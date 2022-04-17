@@ -146,7 +146,7 @@ body {
   
   .inputEdit{
     display: none;
-  }
+}
 
   .user-content-hidden{
     display: none;
@@ -196,10 +196,6 @@ body {
       .completed-tasks-group{
         width: 45%;
       } 
-
-      #new-task{
-        width: 90%;
-      }
 
 
   }
