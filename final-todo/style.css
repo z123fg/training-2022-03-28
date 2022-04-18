@@ -1,0 +1,46 @@
+main.todo-list{
+    padding:20px;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: center;
+    justify-content: center;
+    width:100%
+}
+
+
+.todo__form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo__list{
+    max-width: 800px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:20px;
+    width:100%
+}
+
+.todo__list h4{
+    margin:0px;
+    padding:0px;
+}
+
+.list--pending, .list--completed{
+    margin:0px;
+    list-style-type: none;
+    padding:10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    flex-basis: 50%;
+    flex-grow:1;
+    flex-shrink: 1;
+    min-height:500px;
+    border:2px solid darkgray
+}
+
