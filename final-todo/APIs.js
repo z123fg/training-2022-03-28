@@ -9,8 +9,8 @@ const APIs = (() => {
     const createTodo = (newTodo) => {
         return fetch(`${url}/${path}`, {
             method: "POST",
-            header: {
-                Accept: "aplication/json",
+            headers: {
+                Accept: "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newTodo)
@@ -20,8 +20,8 @@ const APIs = (() => {
     const toggleTodo = (id, newTodo) => {
         return fetch(`${url}/${path}/${id}`, {
             method: "PATCH",
-            header: {
-                Accept: "aplication/json",
+            headers: {
+                Accept: "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newTodo) //{isCompleted:"breakfast"}
@@ -31,8 +31,8 @@ const APIs = (() => {
     const editTodo = (id, newTodo) => {
         return fetch(`${url}/${path}/${id}`, {
             method: "PATCH",
-            header: {
-                Accept: "aplication/json",
+            headers: {
+                Accept: "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newTodo) //{content:"breakfast"}

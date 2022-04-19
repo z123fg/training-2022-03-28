@@ -1,8 +1,9 @@
 
 //mvc: model view controller
-//mvvm: model view view-model
+//mvvm: model view view-model, react uses mvvm and diffing algo, virtual dom
 
-import {APIs} from "./APIs";
+import APIs from "./APIs.js";
+import { leftArrowIcon, rightArrowIcon, editIcon, deleteIcon } from "./svg.js";
 
 const Model = (()=>{
     class State {
@@ -17,7 +18,8 @@ const Model = (()=>{
         }
 
         set todos(newTodos){
-            newTodos = newTodos.map((todo,index)=>({...todo, isEdit: false,index}));
+            newTodos.sort((a,b)=>b.id - a.id);
+            newTodos = newTodos.map((todo,index)=>({...todo, isEdit: todo.isEdit||false,index}));
             this.#todos = newTodos;
             this.#pendingTodos = newTodos.filter(todo=>!todo.isCompleted);
             this.#completedTodos = newTodos.filter(todo=>todo.isCompleted);
@@ -59,29 +61,31 @@ const Model = (()=>{
 
 const View = (() => {
 
-    const getPendingListEl = ()=>document.querySelector(".list--pending");
-    const getCompletedListEl = ()=>document.querySelector(".list--completed");
-    const getFormEl = ()=>document.querySelector("todo__form");
+    const getPendingListEl = ()=>document.querySelector(".list--pending ul");
+    const getCompletedListEl = ()=>document.querySelector(".list--completed ul");
+    const getFormEl = ()=>document.querySelector(".todo__form");
     const getListContainerEl = ()=>document.querySelector(".todo__list");
-    const getTodoInputEl = (index)=>document.querySelector(`#${index}-todo-input`);
-    const getFormInputEl = () => document.querySelector(".todo__form input")
-    const createTodosTemp = (todos,index) => {
-        return todos.map(todo=>{
+    const getTodoInputEl = (index)=>document.getElementById(`${index}-todo-input`);
+    const getFormInputEl = () => document.querySelector(".todo__form input");
 
-            const namePrefix = `${todo.index}`
+    const createTodosTemp = (todos) => {
+        return todos.map((todo)=>{
+
+            const namePrefix = `${todo.index}`;
+
             return `
                 <li>
-                    ${todo.isCompleted?`<button name="${namePrefix}-move"> <= </button>`:""}
-                    ${todo.isEdit?`<input id="${index}-todo-input" value="${todo.content}">`:`<span>${todo.content}</span>`}
-                    <button name="${namePrefix}-edit">
-                        edit
+                    ${todo.isCompleted?`<button class="btn--move" name="${namePrefix}-move"> ${leftArrowIcon} </button>`:""}
+                    ${todo.isEdit?`<input id="${namePrefix}-todo-input" value="${todo.content}">`:`<span>${todo.content}</span>`}
+                    <button class="btn--edit" name="${namePrefix}-edit">
+                        ${editIcon}
                     </button>
-                    <button name="${namePrefix}-delete">
-                        delete
+                    <button class="btn--delete" name="${namePrefix}-delete">
+                        ${deleteIcon}
                     </button>
                     ${!todo.isCompleted? //conditional rendering
-                    `<button name="${namePrefix}-move">
-                        =>
+                    `<button class="btn--move" name="${namePrefix}-move">
+                        ${rightArrowIcon}
                     </button>`:
                     ""}
                 </li>
@@ -105,15 +109,17 @@ const View = (() => {
     }
 })();
 
-const Controller = ((model,view) => {
+const ViewModel = ((model,view) => {
     const state = new model.State();
     const bindEvent = () =>{
         //submit, edit, delete, toggle
-        view.getFormEl.addEventListener("submit",function(e){
-            const newTodo = {content:getFormInputEl().value, isCompleted:false}
+        view.getFormEl().addEventListener("submit",function(e){
+            e.preventDefault();
+            const newTodo = {content: view.getFormInputEl().value, isCompleted:false}
             model.createTodo(newTodo).then(res=>{
                 state.todos.unshift(res);
-                state.todos = [...state.todos]
+                state.todos = [...state.todos];
+                view.getFormInputEl().value="";
             })
         });
 
@@ -131,18 +137,18 @@ const Controller = ((model,view) => {
                     const newContent = view.getTodoInputEl(index).value;
                     model.editTodo(id,{content:newContent}).then((res)=>{
                         state.todos[index] = res;
-                        state.todos = [...state.todos]
+                        state.todos = [...state.todos];
                     })
                 }else{
                     state.todos[index].isEdit = !isEdit;
-                    state.todos = [...state.todos]
+                    state.todos = [...state.todos];
                 }
                 
 
             }else if(role === "delete"){
                 model.deleteTodo(id).then(res=>{
                     state.todos.splice(index,1);
-                    state.todos = [...state.todos]
+                    state.todos = [...state.todos];
                 })
 
             }
@@ -174,4 +180,4 @@ const Controller = ((model,view) => {
 })(Model,View);
 
 
-Controller.bootstrap();
+ViewModel.bootstrap();

@@ -1,46 +1,133 @@
-main.todo-list{
-    padding:20px;
-    display:flex;
-    flex-direction: column;
-    gap:10px;
-    align-items: center;
-    justify-content: center;
-    width:100%
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Rubik:wght@300&display=swap');
+*{
+    font-family: 'Open Sans', sans-serif;
+}
+main.todo-list {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.todo__form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap:10px;
+}
+
+.todo__form button{
+    background-color: #008cba;
+    color:white;
 }
 
 
-.todo__form{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+
+button{
+    cursor: pointer;
+    flex-shrink: 0;
+    height:30px;
+    border-radius: 5px;
+    outline:none;
+    border:none;
+    padding:3px
 }
 
-.todo__list{
-    max-width: 800px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap:20px;
-    width:100%
+input{
+    height:30px;
+    min-width: 80px;
+    border:1px lightgray solid;
+    border-radius: 5px;
+    outline:none;
+    text-align: left;
+    padding:5px;
+    box-sizing: border-box;
 }
 
-.todo__list h4{
-    margin:0px;
-    padding:0px;
+.todo__list {
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
 }
 
-.list--pending, .list--completed{
-    margin:0px;
-    list-style-type: none;
-    padding:10px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    flex-basis: 50%;
-    flex-grow:1;
-    flex-shrink: 1;
-    min-height:500px;
-    border:2px solid darkgray
+.todo__list h4 {
+  margin: 0px;
+  padding: 0px;
 }
 
+.todo__list ul {
+  list-style-type: none;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+}
+
+.list--pending,
+.list--completed {
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  flex-basis: 50%;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  min-height: 500px;
+  border: 1px solid lightgray;
+}
+
+.todo__list span,
+input {
+  flex-grow: 1;
+}
+
+.todo__list span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.todo__list li {
+  padding: 5px;
+  gap: 5px;
+  background-color: #e6e2d3;
+  border-radius: 5px;
+  height: 30px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn--edit{
+    width: 30px;
+    height: 30px;
+    background-color: #008cba;
+}
+.btn--delete{
+    width: 30px;
+    height: 30px;
+    background-color: #c94c4c;
+}
+.btn--move{
+    width: 30px;
+    height: 30px;
+    background-color: #4caf50;
+}
+
+svg{
+    width:20px;
+    height:20px;
+    pointer-events: none;
+    fill:white;
+}
