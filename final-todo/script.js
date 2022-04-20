@@ -72,7 +72,7 @@ const View = (() => {
         return todos.map((todo)=>{
 
             const namePrefix = `${todo.index}`;
-
+            
             return `
                 <li>
                     ${todo.isCompleted?`<button class="btn--move" name="${namePrefix}-move"> ${leftArrowIcon} </button>`:""}
