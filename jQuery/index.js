@@ -12,40 +12,40 @@
 
 class MyJQuery {
     #elements;
-    constructor(selector){
+    constructor(selector) {
         this.#elements = document.querySelectorAll(selector);//nodelist,array
         //console.log(this.#elements)
     }
-    static print(){
+    static print() {
         console.log("print")
     }
-    html(innerHTML){
-        this.#elements.forEach(element=>{
+    html(innerHTML) {
+        this.#elements.forEach(element => {
             element.innerHTML = innerHTML
         })
     }
 
-    hide(){
-        this.#elements.forEach(element=>{
-            element.style.display="none";
+    hide() {
+        this.#elements.forEach(element => {
+            element.style.display = "none";
         })
     }
 
-    show(){
-        
-        this.#elements.forEach(element=>{
+    show() {
+
+        this.#elements.forEach(element => {
             element.style.removeProperty("display")
         })
     }
 
-    on(eventType, cb){
-        this.#elements.forEach(element=>{
+    on(eventType, cb) {
+        this.#elements.forEach(element => {
             element.addEventListener(eventType, cb);
         })
     }
 }
 
-const $$ = function(selector){
+const $$ = function (selector) {
 
     return new MyJQuery(selector)
 }
@@ -60,33 +60,33 @@ $( "#button-container button" ).on( "click", function( event ) {
   hiddenBox.show();
 }); */
 
-$$.ajax = function(option){
-    const {data, url, type="GET",complete, success, error} = option;
+$$.ajax = function (option) {
+    const { data, url, type = "GET", complete, success, error } = option;
     //console.log(data, url, type,complete, success, error)
     const promise = fetch(url, {
-        method:type,
-        ...(type === "GET"||"DELETE"?{}:{body:JSON.stringify(data)})
-    }).then(res=>{
-        console.log("res",res);
+        method: type,
+        ...(type === "GET" || "DELETE" ? {} : { body: JSON.stringify(data) })
+    }).then(res => {
+        console.log("res", res);
         return res.json();
-    }).then(result=>{
-        success?.(result,undefined,undefined);
-    }).catch((err)=>{
-        error?.(undefined,undefined,err);
-    }).finally(()=>{
-        complete?.(undefined,undefined)
+    }).then(result => {
+        success?.(result, undefined, undefined);
+    }).catch((err) => {
+        error?.(undefined, undefined, err);
+    }).finally(() => {
+        complete?.(undefined, undefined)
     });
 
-    console.log("promise",promise)
+    console.log("promise", promise)
 }
 
 $$.ajax({
     url: "https://jsonplaceholder.typicode.com/todos/1",
     data: {
-      zipcode: 97201
+        zipcode: 97201
     },
-    success: function( result ) {
-        console.log("request succeed",result)
-      //$( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
+    success: function (result) {
+        console.log("request succeed", result)
+        //$( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
     }
-  });
+});
