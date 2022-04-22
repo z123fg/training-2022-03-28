@@ -30,6 +30,7 @@
 
 
     React: library, framework; //context api, hooks //axios, redux, saga, react router
+    // collaboration of babel, webpack, react, react-dom, sass, styled-component
     Angular: framework // angular cli, router, httpclient, observable, ngrx, service
     Vuejs:framework;
 
@@ -45,29 +46,15 @@
 
     for react project, you need babel to transpile all the files first and then use webpack to bundle them into one file
 
-
+    tree-shaking, minify, uglify
 */
-
 import React from "react"
 import ReactDOM from "react-dom"
-
-
-{/* <div>Hello {this.props.name}</div> //not regular js syntax,jsx (javascript xml) */ }
-class HelloMessage extends React.Component {
-
-    render() {
-        return  React.createElement(
-            "div",
-            null,
-            "Hello ",
-            this.props.name
-          );
-    }
-}
+import HelloMessage from "./components/HelloMessage";
 
 console.log(React.createElement("div", null, "Hello ", "Taylor")); //virtual dom
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
-root.render(React.createElement(HelloMessage, { name: "Taylor" }));//<HelloMessage name="Taylor" />
+root.render(<HelloMessage name="Taylor"/>);//<HelloMessage name="Taylor" />

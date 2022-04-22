@@ -1,0 +1,6 @@
+
+@import "style1.css";
+
+div{
+    background-color: salmon;/* url() */
+}
