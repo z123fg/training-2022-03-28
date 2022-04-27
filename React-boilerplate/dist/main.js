@@ -90,7 +90,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_style1_css__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ndiv{\n    background-color: salmon;/* url() */\n}", "",{"version":3,"sources":["webpack://./src/components/style.css"],"names":[],"mappings":";AAGA;IACI,wBAAwB,CAAC,UAAU;AACvC","sourcesContent":["\n@import \"style1.css\";\n\ndiv{\n    background-color: salmon;/* url() */\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ndiv{\n    background-color: green;/* url() */\n}", "",{"version":3,"sources":["webpack://./src/components/style.css"],"names":[],"mappings":";AAGA;IACI,uBAAuB,CAAC,UAAU;AACtC","sourcesContent":["\n@import \"style1.css\";\n\ndiv{\n    background-color: green;/* url() */\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
