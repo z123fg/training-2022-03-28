@@ -8,6 +8,7 @@ let initId = 0;
 class Todo extends Component {
   state = {
     todos: [],
+    
   };
 
   handleAddTodoItem = (content) => {
