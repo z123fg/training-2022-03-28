@@ -1,0 +1,27 @@
+.wishlist__container{
+    width:400px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    gap:20px;
+}
+
+.wishlist__container h3{
+    text-align: center;
+}
+
+.wishlist__container ul{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: stretch;
+    justify-content: start;
+}
+
+.wishlist__container ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

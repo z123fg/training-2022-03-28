@@ -1,0 +1,32 @@
+.item__container {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  gap: 30px;
+  border-radius: 10px;
+  align-items: start;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.thumbnail__container {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  height: auto;
+}
+
+.item-info__container {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+}
+
+.item-info__container p {
+  text-align: start;
+}
+
+.item-info__container .info-entry:last-child p {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

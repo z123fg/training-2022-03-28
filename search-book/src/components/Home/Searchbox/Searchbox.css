@@ -1,0 +1,22 @@
+.searchbook-form{
+    width:400px;
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbook-form input{
+    height:30px;
+    border-radius: 5px;
+    border:1px solid lightgray
+}
+
+.searchbook-form button{
+    height:30px;
+    border-radius: 5px;
+    outline:none;
+    border:none;
+    background-color: #008cba;
+}
