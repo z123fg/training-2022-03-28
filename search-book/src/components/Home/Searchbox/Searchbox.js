@@ -2,6 +2,8 @@ import React,{useEffect, useState, useCallback} from "react";
 import { searchbook } from "../../../apis/searchbook";
 import "./Searchbox.css";
 import _ from "lodash"
+import { useDispatch } from "react-redux";
+import { updateCurrentPage, updateKeyword } from "../../../redux/slices/searchbookSlice";
 
 /* 
 axios:
@@ -21,9 +23,15 @@ useMemo
 
 
 */
-const Searchbox = ({handleSubmit}) => {
+const Searchbox = () => {
     const [input, setInput] = useState("");
-    const cachedDebouncedFn = useCallback(_.debounce(handleSubmit,2000),[handleSubmit]);
+    const dispatch = useDispatch();
+
+    const cachedDebouncedFn = useCallback(_.debounce((input)=>{
+        dispatch(updateKeyword(input));
+        dispatch(updateCurrentPage(1));
+    },2000),[dispatch]);
+    
 
     useEffect(()=>{ //side effect
         if(input!==""){
@@ -38,7 +46,9 @@ const Searchbox = ({handleSubmit}) => {
     }
     const handleClick = (e) => {
         e.preventDefault();
-        handleSubmit(input);
+        //handleSubmit(input);
+        dispatch(updateKeyword(input));
+        dispatch(updateCurrentPage(1));
     }
    
     return (

@@ -1,7 +1,7 @@
 import React from "react";
 import "./Wishlist.css";
 
-
+//redux thunk
 const Wishlist = ({ handleDeleteWishlist, wishlist }) => {
   return (
     <div className="wishlist__container">
