@@ -5,7 +5,7 @@ import SearchResult from "./SearchResult/SearchResult";
 import "./Home.css"
 import Pagination from "../Pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
-import { loadSearchResult, updateTotalItems } from "../../redux/slices/searchbookSlice";
+import { decrementCurrentPage, incrementCurrentPage, loadSearchResult, updateCurrentPage, updateTotalItems } from "../../redux/slices/searchbookSlice";
 //lift the state, props drilling
 //
 
@@ -16,11 +16,12 @@ const Home = ({ handleAddWishlist }) => {
     // const [keyword, setKeyword] = useState("");
     const dispatch = useDispatch();
 
-    const items = useSelector(state=>state.searchbookSlice.searchResult);
-    const keyword = useSelector(state=>state.searchbookSlice.keyword);
-    const currentPage = useSelector(state=>state.searchbookSlice.currentPage);
-    const totalItems = useSelector(state=>state.searchbookSlice.totalItems);
-
+    const items = useSelector(state => state.searchbookSlice.searchResult);
+    const keyword = useSelector(state => state.searchbookSlice.keyword);
+    const currentPage = useSelector(state => state.searchbookSlice.currentPage);
+    const totalItems = useSelector(state => state.searchbookSlice.totalItems);
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(totalItems / itemsPerPage)
 
     //totalPage:totalPage=totalItems/itemsPerPage, itemsPerPage = 5 ,totalItems,
     /* 
@@ -32,7 +33,7 @@ const Home = ({ handleAddWishlist }) => {
 
     useEffect(() => {
         (async () => {
-            if(keyword==="") return;
+            if (keyword === "") return;
             const result = await searchbook(keyword, currentPage, 5);
             if (result?.data?.totalItems !== undefined) {
                 //setTotalItems(result.data.totalItems)
@@ -43,7 +44,7 @@ const Home = ({ handleAddWishlist }) => {
                 dispatch(loadSearchResult(result.data.items))
             }
 
-            window.scrollTo(0,0)
+            window.scrollTo(0, 0)
         })()
 
     }, [currentPage, keyword])
@@ -66,10 +67,37 @@ const Home = ({ handleAddWishlist }) => {
     //     setCurrentPage(targetPageNum);
 
     // }
+
+    const handleClickPrev = () => {
+        if (currentPage <= 1) {
+            return;
+        }
+        //handleChangePage(currentPage - 1);
+        dispatch(decrementCurrentPage())
+    }
+
+    const handleClickNext = () => {
+        if (currentPage >= totalPages) {
+            return;
+        }
+        //handleChangePage(currentPage + 1);
+        dispatch(incrementCurrentPage())
+    }
+
+    const handleClickPage = (targetPage) => {
+        dispatch(updateCurrentPage(targetPage))
+    }
     return (
         <div className="home__container">
-            <Searchbox /* handleSubmit={handleSubmit} */ />
-            <Pagination /* currentPage={currentPage} totalItems={totalItems} */ itemsPerPage={5} /* handleChangePage={handleChangePage} */>
+            <Searchbox />
+            <Pagination
+                itemsPerPage={itemsPerPage}
+                handleClickPrev={handleClickPrev}
+                handleClickNext={handleClickNext}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                handleClickPage={handleClickPage}
+            >
                 <SearchResult handleAddWishlist={handleAddWishlist} items={items} />
             </Pagination>
 

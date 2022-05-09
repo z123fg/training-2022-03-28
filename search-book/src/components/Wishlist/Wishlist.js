@@ -3,6 +3,7 @@ import "./Wishlist.css";
 
 //redux thunk
 const Wishlist = ({ handleDeleteWishlist, wishlist }) => {
+  console.log("wishlist",wishlist)
   return (
     <div className="wishlist__container">
         <h3>My reading wishlist({wishlist.length})</h3>
