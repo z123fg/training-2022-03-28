@@ -20,3 +20,39 @@
     border:none;
     background-color: #008cba;
 }
+
+.searchbook-form .auto-complete__container{
+    display: flex;
+    flex-direction: column;
+    width:300px
+}
+
+.searchbook-form .auto-complete__container .auto-complete__suggestion{
+    width:inherit
+}
+
+.searchbook-form .auto-complete__suggestion ul{
+    list-style-type: none;
+    padding:0;
+    margin:0;
+    display: flex;
+    flex-direction: column;
+    border:1px solid lightgray;
+    border-radius: 5px;
+    width:inherit;
+    position: absolute;
+    background-color: white;
+    box-sizing: border-box;
+}
+.searchbook-form .auto-complete__suggestion li{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding:5px;
+    cursor: pointer;
+
+}
+.searchbook-form .auto-complete__suggestion li:hover{
+    outline:1px solid lightgray
+}
+

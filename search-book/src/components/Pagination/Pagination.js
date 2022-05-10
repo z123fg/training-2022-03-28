@@ -13,39 +13,31 @@ const Pagination = ({
 	handleClickPage
 }) => {
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
-	//3:first current last
-	//2:first last
-	//1:current
 
-	//1234 5
+	const renderPageButtons2 = () => {
+		const pageButton = (num) => <button onClick={()=>handleClickPage(num)}  disabled={num === currentPage}>{num}</button>
+		const prevButtonEl = <button onClick={handleClickPrev} disabled={currentPage === 1}>Prev</button>
+		const nextButtonEl = <button onClick={handleClickNext} disabled={currentPage === totalPages}>Next</button>
+		const firstFiveButtonsEl = Array(5).fill().map((_,index)=>index+1).map(num=>pageButton(num))
+		const lastFiveButtonsEl = Array(5).fill().map((_,index)=>totalPages-4+index).map(num=>pageButton(num))
+		const currentPageButtonCluster = Array(3).fill().map((_,index)=>currentPage+index-1).map(num=>pageButton(num))
+		const ellipsis = <div>...</div>;
+		const firstButtonEl = pageButton(1)
+		const lastButtonEl = pageButton(totalPages)
 
-	//12 345 67
-
-	// prev, first page, ellipsis, current page cluster, ellipsis,last page, next
-	const renderPageButtons = () => {
-		const prevButtonEl = <button onClick={handleClickPrev} disabled={currentPage === 1}>Prev</button>;
-		const firstPageButtonEl = totalPages >= 2 ? <button disabled={currentPage === 1} onClick={() => handleClickPage(1)}>1</button> : <></>;
-		const firstEllipsisEl = currentPage >= 4 ? <>...</> : <></>;
-		const leftNeighborButtonEl = currentPage >= 3 ? <button onClick={() => handleClickPage(currentPage - 1)}>{currentPage - 1}</button> : <></>;
-		const currentPageButtonEl = currentPage >= 2 && currentPage <= totalPages - 1 ? <button disabled onClick={() => handleClickPage(currentPage)}>{currentPage}</button> : <></>;
-		const rightNeighborButtonEl = currentPage <= totalPages - 2 ? <button onClick={() => handleClickPage(currentPage + 1)}>{currentPage + 1}</button> : <></>;
-		const secondEllipsisEl = currentPage <= totalPages - 3 ? <>...</> : <></>;
-		const lastPageButtonEl = totalPages >= 2 ? <button disabled={totalPages === currentPage} onClick={() => handleClickPage(totalPages)}>{totalPages}</button> : <></>;;
-		const nextButtonEl = <button onClick={handleClickNext} disabled={currentPage === totalPages}>Next</button>;
-
-		return (
-			<>
-				{prevButtonEl}
-				{firstPageButtonEl}
-				{firstEllipsisEl}
-				{leftNeighborButtonEl}
-				{currentPageButtonEl}
-				{rightNeighborButtonEl}
-				{secondEllipsisEl}
-				{lastPageButtonEl}
-				{nextButtonEl}
-			</>
-		)
+		let pageButtons;
+		if(totalPages<=7){
+			pageButtons = Array(totalPages).fill().map((_,index)=>pageButton(index+1))
+		}else{
+			if(currentPage<=4){
+				pageButtons = [...firstFiveButtonsEl,ellipsis, lastButtonEl];
+			}else if(currentPage>4 && currentPage <totalPages-3){
+				pageButtons = [firstButtonEl, ellipsis, ...currentPageButtonCluster,ellipsis,lastButtonEl]
+			}else{
+				pageButtons = [firstButtonEl,ellipsis,...lastFiveButtonsEl];
+			}
+		}
+		return [prevButtonEl,...pageButtons,nextButtonEl]
 	}
 
 	return (
@@ -58,7 +50,7 @@ const Pagination = ({
                         <button disabled={currentPage >= totalPages} onClick={handleClickNext}>Next</button>
                     </>
                 } */}
-				{totalItems > 0 && renderPageButtons()}
+				{totalItems > 0 && renderPageButtons2()}
 
 
 			</div>

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { searchbook } from "../../apis/searchbook";
 
 //slice is like a sub-store
 export const searchbookSlice = createSlice({
@@ -11,7 +12,7 @@ export const searchbookSlice = createSlice({
         keyword: "",
     },
     reducers: {
-        loadSearchResult: (state, action) => {
+        loadSearchResult: async (state, action) => {
             state.searchResult = action.payload;
         },
         loadWishlist: (state, action) => {
@@ -45,8 +46,8 @@ export const searchbookSlice = createSlice({
         },
         updateKeyword: (state, action) => {
             state.keyword = action.payload;
-        },
-    },
+        }
+    }
 });
 
 export const {
