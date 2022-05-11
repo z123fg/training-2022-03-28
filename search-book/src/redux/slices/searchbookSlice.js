@@ -1,64 +1,77 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchbook } from "../../apis/searchbook";
 
-//slice is like a sub-store
-export const searchbookSlice = createSlice({
-    name: "searchbookSlice",
-    initialState: {
-        searchResult: [],
-        wishlist: [],
-        totalItems: 0,
-        currentPage: 1,
-        keyword: "",
-    },
-    reducers: {
-        loadSearchResult: async (state, action) => {
-            state.searchResult = action.payload;
-        },
-        loadWishlist: (state, action) => {
-            state.wishlist = action.payload;
-        },
-        addWishlist: (state, action) => {
-            const prev = state.wishlist;
-            const bookMap = {}; //hashMap {[id]: book}
-            const nextWishlist = [action.pay, ...prev];
-            nextWishlist.forEach((book) => {
-                bookMap[book.id] = book;
-            });
-            state.wishlist = Object.values(bookMap);
-        },
-        deleteWishlist: (state, action) => {
-            state.wishlist = state.wishlist.filter(
-                (item) => item.id !== action.payload
-            );
-        },
-        updateTotalItems: (state, action) => {
-            state.totalItems = action.payload;
-        },
-        incrementCurrentPage: (state) => {
-            state.currentPage = state.currentPage + 1;
-        },
-        decrementCurrentPage: (state) => {
-            state.currentPage = state.currentPage - 1;
-        },
-        updateCurrentPage: (state, action) => {
-            state.currentPage = action.payload
-        },
-        updateKeyword: (state, action) => {
-            state.keyword = action.payload;
-        }
-    }
+//click submit button, click suggestion trigger searchbook api(side-effect)
+//change page trigger searchbook api(side-effect)
+
+//update keyword state
+export const updateKeyword = createAsyncThunk("searchbookSlice/updateKeyword", async (keyword, { getState }) => {
+    const { itemsPerPage } = getState().searchbookSlice;
+    const result = await searchbook(keyword, 1, itemsPerPage);
+    return result;
 });
 
-export const {
-    loadSearchResult,
-    loadWishlist,
-    addWishlist,
-    deleteWishlist,
-    incrementCurrentPage,
-    decrementCurrentPage,
-    updateTotalItems,
-    updateKeyword,
-    updateCurrentPage
-} = searchbookSlice.actions;
+export const changePage = createAsyncThunk("searchbookSlice/changePage", async (targetPage, { getState, rejectWithValue }) => {
+    const { totalPages, keyword, itemsPerPage } = getState().searchbookSlice;
+    if (isNaN(targetPage) || targetPage < 1 || targetPage > totalPages) return rejectWithValue("invalid page number!");
+    const result = await searchbook(keyword, targetPage, itemsPerPage);
+    return result;
+})
+
+
+
+const searchbookSlice = createSlice({
+    name: "searchbookSlice",
+    initialState: {
+        bookList: [],
+        keyword: "",
+        currentPage: 1,
+        totalItems: 0,
+        totalPages: 1,
+        itemsPerPage: 5,
+        isLoading: false
+    },
+    extraReducers: {
+        [updateKeyword.pending]: (state, action) => {
+            const keyword = action.meta.arg;
+            state.keyword = keyword;
+            state.isLoading = true;
+        },
+        [updateKeyword.fulfilled]: (state, action) => {
+            const items = action?.payload?.data?.items || [];
+            const totalItems = action?.payload?.data?.totalItems || 0;
+            const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+            state.isLoading = false;
+            state.bookList = items;
+            state.totalItems = totalItems;
+            state.totalPages = totalPages;
+            state.currentPage = 1;
+        },
+        [updateKeyword.rejected]: (state, action) => {
+            state.isLoading = false;
+            alert("request failed");
+        },
+        [changePage.pending]: (state, action) => {
+            state.isLoading = true;
+        },
+
+        [changePage.fulfilled]: (state, action) => {
+            const items = action?.payload?.data?.items || [];
+            const totalItems = action?.payload?.data?.totalItems || 0;
+            const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+            state.isLoading = false;
+            state.bookList = items;
+            state.totalItems = totalItems;
+            state.totalPages = totalPages;
+            state.currentPage = action.meta.arg;
+        },
+        [changePage.rejected]: (state, action) => {
+            state.isLoading = false;
+            alert(action.payload);
+        },
+    }
+
+
+});
+
 export default searchbookSlice.reducer;

@@ -1,11 +1,18 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBookToWishlist } from "../../../../redux/slices/wishlistSlice";
 import "./BookInfo.css"
 //ternary operator
 //statement1?operation1:statement2?operation3:operaion4
 //if else if else
-const BookInfo = ({ item, handleAddWishlist }) => {
+const BookInfo = ({ item }) => {
+    const dispatch = useDispatch();
+
     const { authors, publisher, publishedDate, title, description } = item.volumeInfo;
-    const thumbnail = item?.volumeInfo?.imageLinks?.thumbnail || ""
+    const thumbnail = item?.volumeInfo?.imageLinks?.thumbnail || "";
+    const handleAddWishlist = (newBook) => {
+        dispatch(addBookToWishlist(newBook))
+    }
     return (
         <li className="item__container" onClick={() => { handleAddWishlist(item) }}>
             <div className="thumbnail__container">

@@ -2,6 +2,8 @@ import './App.css';
 import Home from './components/Home/Home';
 import Wishlist from './components/Wishlist/Wishlist';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addBookToWishlist, loadWishlist } from './redux/slices/wishlistSlice';
 
 
 /* 
@@ -29,35 +31,15 @@ import { useEffect, useState } from 'react';
   difference: flux originally support multiple store, and has dispatcher, while redux originally only has one store
 */
 
-
-const url = "https://www.googleapis.com/books/v1/volumes?q=bookname&startIndex=0&maxResults=20"
 function App() {
-  const [wishlist, setWishlist] = useState(JSON.parse(localStorage.getItem("wishlist")||"[]"));
-
+  const dispatch = useDispatch()
   useEffect(()=>{
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  },[wishlist]);
-
-  const handleAddWishlist = (bookInfo) => {
-    setWishlist(prev=>{
-      const bookMap = {}; //hashMap {[id]: book}
-      const nextWishlist = [bookInfo, ...prev];
-      nextWishlist.forEach(book=>{
-        bookMap[book.id] = book;
-      });
-      return Object.values(bookMap);
-    });
-  }
-
-  const handleDeleteWishlist = (id) => {
-    setWishlist(prev=>{
-      return prev.filter(item=>item.id !== id)
-    });
-  }
+    dispatch(loadWishlist());
+  },[])
   return (
     <div className="App">
-      <Home handleAddWishlist={handleAddWishlist}/>
-      <Wishlist handleDeleteWishlist={handleDeleteWishlist} wishlist={wishlist}/>
+      <Home />
+      <Wishlist/>
     </div>
   );
 }

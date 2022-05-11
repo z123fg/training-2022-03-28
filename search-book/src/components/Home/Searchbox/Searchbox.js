@@ -3,7 +3,7 @@ import { searchbook } from "../../../apis/searchbook";
 import "./Searchbox.css";
 import _ from "lodash"
 import { useDispatch } from "react-redux";
-import { updateCurrentPage, updateKeyword } from "../../../redux/slices/searchbookSlice";
+import { updateKeyword } from "../../../redux/slices/searchbookSlice";
 
 /* 
 axios:
@@ -27,12 +27,7 @@ const Searchbox = () => {
     const [input, setInput] = useState("");
     const dispatch = useDispatch();
     const [suggestions, setSuggestions] = useState([]);
-    const [showAutocomplete, setShowAutocomplete] = useState(false)
-
-    /*  const cachedDebouncedFn = useCallback(_.debounce((input)=>{
-         dispatch(updateKeyword(input));
-         dispatch(updateCurrentPage(1));
-     },2000),[dispatch]); */
+    const [showAutocomplete, setShowAutocomplete] = useState(false);
 
     const cachedDebouncedFn = useCallback(_.debounce((input) => {
         if (input.trim() === "") return;
@@ -41,18 +36,10 @@ const Searchbox = () => {
         })
     }, 500), []);
 
-
-    /* useEffect(()=>{ //side effect
-        if(input!==""){
-           cachedDebouncedFn(input); 
-        }
-    },[input,cachedDebouncedFn]); */
-
     useEffect(() => {
         if (showAutocomplete) {
             cachedDebouncedFn(input);
         }
-
     }, [input, showAutocomplete])
 
     const handleChange = (e) => {
@@ -68,8 +55,7 @@ const Searchbox = () => {
     const handleClickSubmit = (e) => {
         e.preventDefault();
         //handleSubmit(input);
-        dispatch(updateKeyword(input));
-        dispatch(updateCurrentPage(1));
+        dispatch(updateKeyword(input))
     }
 
     const handleBlur = () => {
@@ -94,7 +80,7 @@ const Searchbox = () => {
                             {
                                 suggestions.map(item => {
                                     return (
-                                        <li key={item.id} onMouseDown={()=>handleClickSuggestion(item?.volumeInfo?.title||"")}>
+                                        <li key={item.id} onMouseDown={() => handleClickSuggestion(item?.volumeInfo?.title || "")}>
                                             {item?.volumeInfo?.title || ""}
                                         </li>
                                     )
