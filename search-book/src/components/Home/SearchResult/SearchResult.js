@@ -4,7 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import { CounterContext, increment } from "../../../App";
 import { addBookToWishlist } from "../../../redux/slices/wishlistSlice";
 import BookInfo from "./BookInfo/BookInfo";
-import "./SearchResult.css"
+import "./SearchResult.css";
+
 
 
 
