@@ -4,6 +4,7 @@ import "./Searchbox.css";
 import _ from "lodash"
 import { useDispatch } from "react-redux";
 import { updateKeyword } from "../../../redux/slices/searchbookSlice";
+import { useSearchParams } from "react-router-dom";
 
 /* 
 axios:
@@ -24,10 +25,14 @@ useMemo
 
 */
 const Searchbox = () => {
-    const [input, setInput] = useState("");
+    let [searchParams, setSearchParams] = useSearchParams();
+
+    const [input, setInput] = useState(searchParams.get("key")||"");
     const dispatch = useDispatch();
     const [suggestions, setSuggestions] = useState([]);
     const [showAutocomplete, setShowAutocomplete] = useState(false);
+
+    
 
     const cachedDebouncedFn = useCallback(_.debounce((input) => {
         if (input.trim() === "") return;
@@ -46,6 +51,8 @@ const Searchbox = () => {
         if (e.target.value.trim() === "") {
             setShowAutocomplete(false)
         } else {
+            
+            setSearchParams({key:e.target.value})
             setShowAutocomplete(true);
         }
         setInput(prev => {

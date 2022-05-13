@@ -32,7 +32,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 /* 
     redux core: dispatch function instead, action function will be received by the thunk, thunk will invoke that function, thunk will dispatch another action 
     createAsyncThunk: dispatch function(created by createAsyncThunk) instead, this function will be received by thunk, you cannot dispatch an action
-                        by yourself, instead, RTK is going to dispatch three lifecycle actions for you
+                      by yourself, instead, RTK is going to dispatch three lifecycle actions for you
 */
 
 export const loadWishlist = createAsyncThunk("wishlistSlice/loadWishlist", async () => {
@@ -99,6 +99,7 @@ const wishlistSlice = createSlice({
         [addBookToWishlist.fulfilled]: (state, action) => {
             state.wishlist = action.payload;
             state.totalPages = Math.ceil(state.wishlist.length / state.itemsPerPage);
+            console.log(state.currentPage)
             state.wishlistForCurPage = state.wishlist.slice((state.currentPage - 1) * state.itemsPerPage,state.currentPage*state.itemsPerPage);
         },
         [addBookToWishlist.rejected]: (state, action) => {
@@ -108,7 +109,7 @@ const wishlistSlice = createSlice({
             state.wishlist = action.payload;
             const prevTotalPages = state.totalPages;//2
             state.totalPages = Math.ceil(state.wishlist.length / state.itemsPerPage);//1
-            if (prevTotalPages !== state.totalPages && state.currentPage === prevTotalPages) {//you need to move the user to previous page
+            if (prevTotalPages !== state.totalPages && state.currentPage === prevTotalPages&&state.currentPage>1) {//you need to move the user to previous page
                 state.currentPage = state.currentPage - 1;
             }
             state.wishlistForCurPage = state.wishlist.slice((state.currentPage - 1) * state.itemsPerPage,state.currentPage*state.itemsPerPage);

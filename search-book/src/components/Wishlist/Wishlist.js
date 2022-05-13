@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CounterContext } from "../../App";
 import { changePage, deleteBookFromWishlist, nextPage, prevPage } from "../../redux/slices/wishlistSlice";
 import Pagination from "../Pagination/Pagination";
 import "./Wishlist.css";
@@ -13,6 +14,8 @@ const Wishlist = () => {
   const currentPage = useSelector(state => state.wishlistSlice.currentPage);
   const totalItems = wishlist.length;
   const totalPages = useSelector(state => state.wishlistSlice.totalPages);
+
+  //const {counter} = useContext(CounterContext)
 
   const handleDeleteWishlist = (id) => {
     dispatch(deleteBookFromWishlist(id))
@@ -29,6 +32,7 @@ const Wishlist = () => {
   }
   return (
     <div className="wishlist__container">
+     {/*  <span>counter: {counter}</span> */}
       <h3>My reading wishlist({wishlist.length})</h3>
       <Pagination
         itemsPerPage={itemsPerPage}
