@@ -173,7 +173,39 @@ let box1:object;
 (box1 as Box<string>).content = "123";
 (<Box<string>> box1).content = "123";
 
-//undefined null void
+//undefined null void(ts, only for type of return of function)
+
+let num2;
+
+
+
+function fun7(arg:string):void{
+}
+
+//any,unknown, never(meaning of this function)
+
+function fun8(): never{
+    /* while(true){
+
+    } */
+    throw new Error("123"); 
+}
+
+
+//unknown any
+let myVar:any;
+myVar = 123;
+myVar="123";
+myVar.toFixed()
+
+let myVar1: unknown;
+myVar1 = "123";
+(myVar1 as string).split("")
+
+
+
+
+
 
 
 

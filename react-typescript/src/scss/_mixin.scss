@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@mixin font-large {
+    font-family: 'Roboto', sans-serif;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 15px;
+     line-height: 26px;
+ }
+ 
+ @mixin font-medium {
+    font-family: 'Roboto', sans-serif;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 14px;
+     line-height: 24px;
+ }
+ 
+ @mixin font-small {
+    font-family: 'Roboto', sans-serif;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 13px;
+     line-height: 22px;
+ }
